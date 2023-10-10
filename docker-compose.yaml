@@ -1,0 +1,25 @@
+version: '3'
+services:
+  cas1:
+    image: cassandra:latest
+    container_name: cas1
+    ports:
+      - 9042:9042
+    volumes:
+      - ./node1:/var/lib/cassandra/data
+    environment:
+      - CASSANDRA_CLUSTER_NAME=Dassandra
+
+  cas2:
+    image: cassandra:latest
+    container_name: cas2
+    restart: always
+    ports:
+      - 9043:9042
+    volumes:
+      - ./node2:/var/lib/cassandra/data
+    links:
+      - cas1:seed
+    environment:
+      - CASSANDRA_SEEDS=seed
+      - CASSANDRA_CLUSTER_NAME=Dassandra
