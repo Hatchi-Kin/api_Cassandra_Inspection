@@ -7,6 +7,8 @@ This REST API built using FastApi provides a simple interface for performing ope
 * restaurants.csv
 * restaurants_inspections.csv
 
+Unzip the two csv in the same directory as the docker-compose.yaml
+
 ## Endpoints / More info accessible at:
 
 ```bash
@@ -22,7 +24,7 @@ pip install -r requirements.txt
 ```
 
 ```bash
-streamlit run app.py
+python app.py
 ```
 
 ## Step 1: Start the Docker containers
