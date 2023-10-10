@@ -1,64 +1,64 @@
-# 🧑🏻‍💻  Brief Cluster Cassandra / FastApi  
+**Brief Cluster Cassandra / FastApi**
+
 This REST API built using FastApi provides a simple interface for performing operations on a Cassandra database.
 
+**Dataset:**
 
-## 💾 Dataset:
-restaurants.csv
-restaurants_inspections.csv
+* restaurants.csv
+* restaurants_inspections.csv
 
+**Endpoints / More info accessible at:**
 
-##  🧐  Endpoints / More info accessible at:
 ```bash
 http://localhost:8000/docs
 ```
 
-## 🙇 Api
-To run the api:
-* In /api-REST_Mongodb-CRUD
+**Api**
+
+**To run the api:**
+
 ```bash
 pip install -r requirements.txt
 ```
+
 ```bash
 streamlit run app.py
-```   
+```
 
-## 🛠️ Deployment:
-Navigate to the directory where you want to download the repo then run the following commands:
+**Deployment:**
+
 ```bash
 git clone https://github.com/Hatchi-Kin/api-REST_Mongodb-CRUD.git
 ```
+
 ```bash
 cd api-REST_Mongodb-CRUD
 ```
 
-## Step 1: Start the Docker containers
-Start all services defined in the docker-compose.yml file.
+**Step 1: Start the Docker containers**
+
+Start all services defined in the `docker-compose.yml` file:
+
 ```bash
 docker compose up -d
 ```
 
-## Step 2: Import the restaurant data
+**Step 2: Prepare the Database before importing Data**
+
 ```bash
 # Create a Bash shell in the Cassandra container.
 docker exec -it cas1 /bin/bash
-```
 
-Connect to the Cassandra database.
-```bash
+# Connect to the Cassandra database.
 cqlsh
-```
 
-Create a new keyspace called `resto`.
-```bash
+# Create a new keyspace called `resto`.
 CREATE KEYSPACE IF NOT EXISTS resto WITH REPLICATION = {'class':'SimpleStrategy', 'replication_factor': 2};
-```
-Use the `resto` keyspace.
-```bash
-USE resto;
-```
 
-Create a table to store the restaurant data.
-```bash
+# Use the `resto` keyspace.
+USE resto;
+
+# Create a table to store the restaurant data.
 CREATE TABLE IF NOT EXISTS restaurant (
   id int PRIMARY KEY,
   name varchar,
@@ -69,15 +69,11 @@ CREATE TABLE IF NOT EXISTS restaurant (
   phone text,
   cuisinetype varchar
 );
-```
 
-Describe the `restaurant` table.
-```bash
+# Describe the `restaurant` table.
 DESCRIBE tables;
-```
 
-Create a table to store the inspection data.
-```bash
+# Create a table to store the inspection data.
 CREATE TABLE IF NOT EXISTS inspection (
   idrestaurant int,
   inspectiondate date,
@@ -88,87 +84,67 @@ CREATE TABLE IF NOT EXISTS inspection (
   grade varchar,
   PRIMARY KEY (idrestaurant, inspectiondate)
 );
-```
 
-Describe the `inspection` table.
-```bash
+# Describe the `inspection` table.
 DESCRIBE tables;
-```
 
-Create an index on the `cuisinetype` column of the `restaurant` table.
-```bash
+# Create an index on the `cuisinetype` column of the `restaurant` table.
 CREATE INDEX IF NOT EXISTS restaurant_cuisinetype_idx ON restaurant (cuisinetype);
-```
 
-Create an index on the `grade` column of the `inspection` table.
-```bash
+# Create an index on the `grade` column of the `inspection` table.
 CREATE INDEX IF NOT EXISTS inspection_grade_idx ON inspection (grade);
-```
 
-## Step 3: Copy the data files into the Docker container
-Copy the restaurant data file into the Cassandra container.
-```bash
+# Copy the restaurant data file into the Cassandra container.
 docker cp restaurants.csv cassandra1:/
-```
 
-Copy the inspection data file into the Cassandra container.
-```bash
+# Copy the inspection data file into the Cassandra container.
 docker cp restaurants_inspections.csv cassandra-c01:/
 ```
 
-## Step 4: Import the data into the Cassandra database
+**Step 3: Import the data into the Cassandra database**
 
-Connect to the Cassandra database.
 ```bash
+# Connect to the Cassandra database.
 docker exec -it cassandra1 cqlsh
-```
 
-Use the `resto` keyspace.
-```bash
+# Use the `resto` keyspace.
 USE resto;
-```
 
-Copy the restaurant data into the `restaurant` table.
-```bash
+# Copy the restaurant data into the `restaurant` table.
 COPY restaurant (id, name, borough, buildingnum, street, zipcode, phone, cuisinetype) FROM '/restaurants.csv' WITH DELIMITER=',';
-```
 
-Copy the inspection data into the `inspection` table.
-```bash
+# Copy the inspection data into the `inspection` table.
 COPY inspection (idrestaurant, inspectiondate, violationcode, violationdescription, criticalflag, score, grade) FROM '/restaurants_inspections.csv' WITH DELIMITER=',';
 ```
 
-## Step 5: Run some basic queries
+**Step 4: Run some basic queries**
 
-Select just 1 entry from the table restaurant
 ```bash
+# Select just 1 entry from the table restaurant
 SELECT * FROM restaurant LIMIT 1;
-```
-Select the number of restaurants in the database.
-```bash
+
+# Select the number of restaurants in the database.
 SELECT COUNT(*) FROM restaurant;
-```
-Select the number of inspections in the database.
-```bash
+
+# Select the number of inspections in the database.
 SELECT COUNT(*) FROM inspection;
 ```
 
-CQL statements
+**CQL statements**
+
 ```bash
 docker exec -it cassandra1 cqlsh
 USE resto;
-```
-for info about restaurant based on it's ID
-```bash
+
+# for info about restaurant based on it's ID
 SELECT * FROM restaurant WHERE id = <restaurant_id>;
-```
-for name of restaurant based on cuisine type
-```bash
+
+# for name of restaurant based on cuisine type
 SELECT name FROM restaurant WHERE cuisinetype = 'American';
-```
-```bash
+
+# Select just 1 entry from the table restaurant
 SELECT * FROM restaurant LIMIT 1;
-```
-```bash
+
+# Select the idrestaurant from inspection where grade is A
 SELECT idrestaurant FROM inspection WHERE grade = 'A' LIMIT 10;
 ```
