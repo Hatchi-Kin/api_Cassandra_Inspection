@@ -1,19 +1,19 @@
-**Brief Cluster Cassandra / FastApi**
+# Brief Cluster Cassandra / FastApi
 
 This REST API built using FastApi provides a simple interface for performing operations on a Cassandra database.
 
-**Dataset:**
+## Dataset:
 
 * restaurants.csv
 * restaurants_inspections.csv
 
-**Endpoints / More info accessible at:**
+## Endpoints / More info accessible at:
 
 ```bash
 http://localhost:8000/docs
 ```
 
-**Api**
+# Api:
 
 **To run the api:**
 
@@ -35,7 +35,7 @@ git clone https://github.com/Hatchi-Kin/api-REST_Mongodb-CRUD.git
 cd api-REST_Mongodb-CRUD
 ```
 
-**Step 1: Start the Docker containers**
+## Step 1: Start the Docker containers
 
 Start all services defined in the `docker-compose.yml` file:
 
@@ -43,7 +43,7 @@ Start all services defined in the `docker-compose.yml` file:
 docker compose up -d
 ```
 
-**Step 2: Prepare the Database before importing Data**
+## Step 2: Prepare the Database before importing Data
 
 ```bash
 # Create a Bash shell in the Cassandra container.
@@ -101,7 +101,7 @@ docker cp restaurants.csv cassandra1:/
 docker cp restaurants_inspections.csv cassandra-c01:/
 ```
 
-**Step 3: Import the data into the Cassandra database**
+## Step 3: Import the data into the Cassandra database
 
 ```bash
 # Connect to the Cassandra database.
@@ -117,7 +117,7 @@ COPY restaurant (id, name, borough, buildingnum, street, zipcode, phone, cuisine
 COPY inspection (idrestaurant, inspectiondate, violationcode, violationdescription, criticalflag, score, grade) FROM '/restaurants_inspections.csv' WITH DELIMITER=',';
 ```
 
-**Step 4: Run some basic queries**
+## Step 4: Run some basic queries
 
 ```bash
 # Select just 1 entry from the table restaurant
@@ -130,7 +130,7 @@ SELECT COUNT(*) FROM restaurant;
 SELECT COUNT(*) FROM inspection;
 ```
 
-**CQL statements**
+## CQL statements
 
 ```bash
 docker exec -it cassandra1 cqlsh
