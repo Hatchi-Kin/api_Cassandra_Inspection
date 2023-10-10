@@ -15,6 +15,17 @@ Unzip the two csv in the same directory as the docker-compose.yaml
 http://localhost:8000/docs
 ```
 
+| Endpoint | Description | Path parameters |
+|---|---|---|
+| GET /restaurant/{id} | Retrieves information about a restaurant based on its ID | `id` |
+| GET /restaurant/name/{name} | Retrieves the ID of a restaurant based on its name | `name` |
+| GET /restaurant/id/{id}/name | Retrieves the name of a restaurant based on its ID | `id` |
+| GET /restaurant/cuisine/{cuisine_type} | Retrieves the names of restaurants that offer a specified cuisine type | `cuisine_type` |
+| GET /inspection/count/{id} | Retrieves the count of inspections for a specified restaurant ID | `id` |
+| GET /restaurant/grade/{grade} | Retrieves a list of ten restaurants for a specified grade | `grade` |
+| POST /restaurant | Adds a new restaurant entry | `restaurant details` |
+
+
 # Api:
 
 **To run the api:**
