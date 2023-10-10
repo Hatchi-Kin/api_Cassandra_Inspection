@@ -25,17 +25,15 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 
-**Deployment:**
-
-```bash
-git clone https://github.com/Hatchi-Kin/api-REST_Mongodb-CRUD.git
-```
-
-```bash
-cd api-REST_Mongodb-CRUD
-```
-
 ## Step 1: Start the Docker containers
+
+```bash
+git clone https://github.com/Hatchi-Kin/api_Cassandra_Inspection.git
+```
+
+```bash
+cd api_Cassandra_Inspection
+```
 
 Start all services defined in the `docker-compose.yml` file:
 
